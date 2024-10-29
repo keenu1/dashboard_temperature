@@ -75,8 +75,8 @@ export default function Home({ data }) {
   };
 
   return (
-    <div className="flex w-full items-center justify-center h-screen">
-      <div className="text-center">
+    <div className="flex w-full  md:items-center mt-5 justify-center h-screen px-2">
+      <div className="text-center w-full md:w-auto">
         <div className="mb-5">
           {socket && (
             <ComboboxButton
@@ -86,13 +86,19 @@ export default function Home({ data }) {
             />
           )}
         </div>
-        <div className="flex gap-2">
-          <BarChartCustom data={chartData} timezone={selectedTimezone} />
-          <LineChartCustom data={chartData} timezone={selectedTimezone} />
+        {/* Responsive layout for charts */}
+        <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto items-center">
+          <div className="w-full md:w-1/2">
+            <BarChartCustom data={chartData} timezone={selectedTimezone} />
+          </div>
+          <div className="w-full md:w-1/2">
+            <LineChartCustom data={chartData} timezone={selectedTimezone} />
+          </div>
         </div>
       </div>
     </div>
   );
+
 }
 
 //load data using SSR

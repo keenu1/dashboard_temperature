@@ -33,7 +33,7 @@ export function LineChartCustom({ data, timezone }) {
                 <CardDescription>{timezone ? `${timezone}` : 'No timezone selected'}</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="h-[400px] w-[600px]">
+                <ChartContainer config={chartConfig} className=" sm:h-[200px] sm:w-[300px] md:h-[200px] md:w-[300px] lg:h-[400px] lg:w-[600px]">
                     <LineChart
                         data={data}
                         margin={{ top: 20 }}
@@ -48,7 +48,7 @@ export function LineChartCustom({ data, timezone }) {
                             }}
                         />
                         <YAxis />
-                        <ChartTooltip
+                        <ChartTooltip className="bg-white"
                             cursor={false}
                             content={<ChartTooltipContent hideLabel />}
                         />
