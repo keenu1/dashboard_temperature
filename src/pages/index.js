@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { ComboboxButton } from "@/components/ui/combobox";
 import { BarChartCustom } from "@/components/ui/barchart";
 import { LineChartCustom } from "@/components/ui/linechart";
+import { base_url } from "@/function";
 
 export default function Home({ data }) {
   const [socket, setSocket] = useState(null);
@@ -26,8 +27,23 @@ export default function Home({ data }) {
   const [selectedTimezone, setSelectedTimezone] = useState("");
 
   const initializeSocket = () => {
-    const newSocket = io("http://localhost:3002");
+    const newSocket = io(base_url);
+
+    // Log connection events
+    newSocket.on("connect", () => {
+      console.log("Socket connected:", newSocket.id); // Display the socket ID on successful connection
+    });
+
+    newSocket.on("connect_error", (error) => {
+      console.error("Connection Error:", error); // Log connection errors
+    });
+
+    newSocket.on("disconnect", (reason) => {
+      console.warn("Socket disconnected:", reason); // Log disconnection reasons
+    });
+
     newSocket.on("test", (message) => console.log(message));
+
     newSocket.on("timezone_data", (data) => {
       const formattedData = data.data.map(item => ({
         created_at: item.created_at,
@@ -35,9 +51,11 @@ export default function Home({ data }) {
       }));
       setChartData(formattedData);
     });
+
     setSocket(newSocket);
     return newSocket;
   };
+
 
   useEffect(() => {
     if (data.length > 0) {
@@ -50,6 +68,8 @@ export default function Home({ data }) {
     }
 
     const newSocket = initializeSocket();
+    console.log('test');
+    console.log(newSocket);
     newSocket.emit("getTemperatureData");
 
     return () => {
@@ -85,7 +105,7 @@ export default function Home({ data }) {
 export async function getServerSideProps() {
   try {
     // Fetch initial data from your backend API
-    const res = await fetch("http://localhost:3001/api/data"); // Adjust the endpoint as needed
+    const res = await fetch(base_url + "api/data"); // Adjust the endpoint as needed
 
     // Check if response is ok
     if (!res.ok) {

@@ -17,3 +17,13 @@ export const convertTimeZone = (date, timezone) => {
 
     return formattedDate;
 };
+
+let base = "";
+if (process.env.NODE_ENV === "development") {
+    base = "http://localhost:3001/";
+} else {
+    base = "https://dashboardtemperatureserver-production.up.railway.app/";
+
+}
+export let base_url = base;
+
