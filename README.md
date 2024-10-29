@@ -48,6 +48,6 @@ https://dashboardtemperatureserver-production.up.railway.app/
 
 5. During deployment, I faced difficulties finding a free hosting service that could connect to my remote database. In the end, I used Railway for both the hosting and the database, which took about half a day to set up.
 
-6. After completing this test, I feel more confident in my backend skills! Thank you, Mr. David Ho, for giving me this opportunity. I hope I met all the assignment requirements.
+After completing this test, I feel more confident in my backend skills! Thank you, Mr. David Ho, for giving me this opportunity. I hope I met all the assignment requirements.
 
 Thanks, and I hope you're doing well!
