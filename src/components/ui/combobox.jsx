@@ -41,7 +41,8 @@ export function ComboboxButton({ socket, reconnectSocket, onTimezoneSelect }) {
         const newSocket = reconnectSocket();
 
         if (newSocket && newValue) {
-            newSocket.emit("getTemperatureData", { timezone: newValue });
+            //request data to socket 
+            newSocket.emit("getTemperatureData");
         }
     };
 

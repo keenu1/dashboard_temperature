@@ -23,6 +23,7 @@ const chartConfig = {
         color: "hsl(var(--chart-1))",
     },
 };
+import { convertTimeZone } from "@/function";
 
 export function LineChartCustom({ data, timezone }) {
     return (
@@ -38,19 +39,12 @@ export function LineChartCustom({ data, timezone }) {
                         margin={{ top: 20 }}
                     >
                         <CartesianGrid vertical={false} />
+                        {/* convertTimeZone */}
                         <XAxis
                             dataKey="created_at"
                             tickFormatter={(value) => {
-                                const date = new Date(value);
-                                return date.toLocaleString("default", {
-                                    month: "short",
-                                    day: "2-digit",
-                                    year: "numeric",
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: false,
-                                    timeZone: timezone || "UTC" // Apply selected timezone or default to UTC
-                                });
+                                const formattedDate = convertTimeZone(value, timezone);
+                                return formattedDate;
                             }}
                         />
                         <YAxis />

@@ -37,29 +37,30 @@ export function BarChartCustom({ data, timezone }) {
                     <BarChart
                         data={data}
                         margin={{ top: 20 }}
-                        data-testid="temperature-bar-chart" // Adding data-testid for the chart
+
                     >
                         <CartesianGrid vertical={false} />
+                        {/* convertTimeZone */}
                         <XAxis
                             dataKey="created_at"
                             tickFormatter={(value) => {
                                 const formattedDate = convertTimeZone(value, timezone);
                                 return formattedDate;
                             }}
-                            data-testid="x-axis" // Optional data-testid for X-axis
+
                         />
-                        <YAxis data-testid="y-axis" /> {/* Optional data-testid for Y-axis */}
+                        <YAxis />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent hideLabel />}
                         />
-                        <Bar dataKey="value" fill="var(--color-desktop)" radius={8} data-testid="temperature-bar">
+                        <Bar dataKey="value" fill="var(--color-desktop)" radius={8} >
                             <LabelList
                                 position="top"
                                 offset={12}
                                 className="fill-foreground"
                                 fontSize={12}
-                                data-testid="temperature-labels" // Adding data-testid for the labels
+
                             />
                         </Bar>
                     </BarChart>

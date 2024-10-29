@@ -1,16 +1,4 @@
 
-import localFont from "next/font/local";
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { ComboboxButton } from "@/components/ui/combobox";
@@ -21,11 +9,9 @@ import { base_url } from "@/function";
 export default function Home({ data }) {
   const [socket, setSocket] = useState(null);
   const [chartData, setChartData] = useState(data);
-
-
-
   const [selectedTimezone, setSelectedTimezone] = useState("");
 
+  //initliaize socket
   const initializeSocket = () => {
     const newSocket = io(base_url);
 
@@ -34,21 +20,27 @@ export default function Home({ data }) {
       console.log("Socket connected:", newSocket.id); // Display the socket ID on successful connection
     });
 
+    //on error
     newSocket.on("connect_error", (error) => {
       console.error("Connection Error:", error); // Log connection errors
     });
 
+    //on discconnected
     newSocket.on("disconnect", (reason) => {
       console.warn("Socket disconnected:", reason); // Log disconnection reasons
     });
 
+    //on test
     newSocket.on("test", (message) => console.log(message));
 
+    //receive data from socket 
     newSocket.on("timezone_data", (data) => {
+      //format the data to the data that chart need
       const formattedData = data.data.map(item => ({
         created_at: item.created_at,
         value: item.value,
       }));
+      //set to chart
       setChartData(formattedData);
     });
 
@@ -67,15 +59,16 @@ export default function Home({ data }) {
       setChartData(formattedData);
     }
 
+    //initialize socket and get temperature data 
     const newSocket = initializeSocket();
-    console.log('test');
-    console.log(newSocket);
     newSocket.emit("getTemperatureData");
 
     return () => {
       newSocket.disconnect();
     };
   }, [data]);
+
+
   // Update selectedTimezone when a new timezone is selected in ComboboxButton
   const onTimezoneSelect = (timezone) => {
     setSelectedTimezone(timezone);
@@ -89,7 +82,7 @@ export default function Home({ data }) {
             <ComboboxButton
               socket={socket}
               reconnectSocket={initializeSocket}
-              onTimezoneSelect={onTimezoneSelect} // Pass onTimezoneSelect here
+              onTimezoneSelect={onTimezoneSelect}
             />
           )}
         </div>
@@ -102,6 +95,7 @@ export default function Home({ data }) {
   );
 }
 
+//load data using SSR
 export async function getServerSideProps() {
   try {
     // Fetch initial data from your backend API
